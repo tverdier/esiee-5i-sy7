@@ -1,0 +1,12 @@
+Groupe 8
+--------
+
+    Objet   :   Mexico
+    Langage :   Javascript
+    Token   :   https://public-api.arskan.com/apidoc
+
+    Se connecter via https://silodata.arskan.com/login
+    Login   :   elisa.somphonhadky@edu.esiee.fr
+    Mdp     :   Esiee#2022
+
+    Serveur Discord :   https://discord.gg/uh5UZ4Wp

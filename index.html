@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Call Arskan</title>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+                integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>	 			   			      -->
+    <script src="arskan-library.js"></script>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- <iframe style="width:1200px;height:800px;" id="viewer" title="ARSKAN viewer" src="https://viewer.arskan.com/objects/embed/623d8135eb315945a0237d6b?lang=fr" allowfullscreen=""></iframe>
+        -->
+        <iframe style="width:1200px;height:800px;" id="viewer" title="ARSKAN viewer" src="" allowfullscreen=""></iframe>
+
+        <script>
+            libArksan = new ArskanLib();
+            // Profile id : 5fd0a6c48568fc630e5be379
+
+            var iframe_element = document.getElementById("viewer");
+            var mexico_3d_model_id = "6246a5c252e58c5c21ce97ad";
+            var profile_id = "";
+
+            libArksan.getOneObjectFromSilo(mexico_3d_model_id).then(result => {
+                console.log("getOneObjectFromSilo : ", result);
+                iframe_element.src = "https://viewer.arskan.com" + result.url + "?lang=fr";
+            });
+        </script>
+
+    </div>
+
+</body>
+
+</html>

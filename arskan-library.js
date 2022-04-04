@@ -6,6 +6,11 @@ class ArskanLib {
         this.profileToken = "5fd0a6c48568fc630e5be379"
     }
 
+    /** buildHeaders
+     * 
+     * Construit l'en-tête nécessaire au bon fonctionnement de l'ensemble des fonctions de l'API
+     * @returns Objet correspondant à l'en-tête
+     */
     buildHeaders() {
         var headers = new Headers();
         headers.append("Accept", "application/json");
@@ -27,8 +32,7 @@ class ArskanLib {
      *   Update an object on your Silo.
      */
 
-    /**
-     * getAllObjectFromSilo
+    /** Get all objects on your Silo.
 
      * https://public-api.arskan.com/objects
     
@@ -36,34 +40,58 @@ class ArskanLib {
      * Champ 	        Type 	        Description
      * Authorization 	String 	        Bear access token.
      * 
-     * @returns Objet correspondant à l'ensemble des objets du Silo
+     * @returns Tableau de tous les Objets des correspondant à l'ensemble des objets du Silo
      * Attributs de l'objet renvoyé :
      *   Champ 	        Type 	    Description
      *   name 	        String      Object name.
      *   silo_id 	    String 	    Related silo id.
      *   description 	String 	    Description.
      *   picture 	    String 	    Url picture.
-     *   shared 	        Object 	
+     *   shared 	    Object 	
      *   enabled 	    String 	    Status of shared object.
      *   url 	        String 	    Id for share object.
      */
-    getAllObjectFromSilo() {
+    getAllObjectsFromSilo() {
+        // Construit l'en-tête
         var _headers = this.buildHeaders();
 
+        // Déclare les options de la requête
         var requestOptions = {
             method: 'GET',
             headers: _headers,
             redirect: 'follow'
         };
 
-        return fetch("https://public-api.arskan.com/objects", requestOptions)
+        // Récupère l'ensemble des objets du Silo et les renvoie sous forme d'objet 
+        return fetch("https://public-api.arskan.com/objects/", requestOptions)
             .then(response => response.text())
             .then(result => { return JSON.parse(result); })
             .catch(error => { return JSON.parse(error); });
     }
 
+    /** Get embed url for an object of your Silo.
+
+     * https://public-api.arskan.com/objects
+    
+     * Header
+     * Champ 	        Type 	        Description
+     * Authorization 	String 	        Bear access token.
+     * 
+     * @returns Tableau de tous les Objets des correspondant à l'ensemble des objets du Silo
+     * Attributs de l'objet renvoyé :
+     *   Champ 	        Type 	    Description
+     *   name 	        String      Object name.
+     *   silo_id 	    String 	    Related silo id.
+     *   description 	String 	    Description.
+     *   picture 	    String 	    Url picture.
+     *   shared 	    Object 	
+     *   enabled 	    String 	    Status of shared object.
+     *   url 	        String 	    Id for share object.
+     */
     getEmbedUrlOfObjectFromSilo(objectIDString) {
-        var _headers = this.buildHeaders();
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + this.apiToken);
+        myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify({
             "profile": this.profileToken,
@@ -72,7 +100,7 @@ class ArskanLib {
 
         var requestOptions = {
             method: 'POST',
-            headers: _headers,
+            headers: myHeaders,
             body: raw,
             redirect: 'follow'
         };
@@ -83,6 +111,13 @@ class ArskanLib {
             .catch(error => { return JSON.parse(error); });
     }
 
+    /** Get one object on your Silo
+
+     * Syntaxe de l'URL : https://public-api.arskan.com/objects/:id
+     * 
+     * @param {*} objectIDString 
+     * @returns 
+     */
     getOneObjectFromSilo(objectIDString) {
         var _headers = this.buildHeaders();
 
@@ -92,9 +127,9 @@ class ArskanLib {
             redirect: 'follow'
         };
 
-        return fetch("https://public-api.arskan.com/objects/share/" + objectIDString, requestOptions)
+        return fetch("https://public-api.arskan.com/objects/" + objectIDString, requestOptions)
             .then(response => response.text())
-            .then(result => { return JSON.parse(result); })
+            .then(result => { console.log(result); return JSON.parse(result); })
             .catch(error => { return JSON.parse(error); });
 
     }

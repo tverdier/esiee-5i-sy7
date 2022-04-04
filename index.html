@@ -36,6 +36,8 @@
                 y : <input class="p-pos-y" type="number" step="0.01"/>
                 z : <input class="p-pos-z" type="number" step="0.01"/>
             </div>
+            <button onclick="editPointer(this.parentElement, this.parentElement.getAttribute('p-id'))">Modifier</button>
+            <button onclick="deletePointer(this.parentElement, this.parentElement.getAttribute('p-id'))">Supprimer</button>
             <br/>
             <br/>
         </div>
@@ -103,6 +105,29 @@
                         newPointer.getElementsByClassName("p-pos-y")[0].value = pointer.position.y;
                         newPointer.getElementsByClassName("p-pos-z")[0].value = pointer.position.z;
                     }
+                });
+            }
+
+            function editPointer(elem, id) {
+                console.log(id);
+                var pointer = {
+                    title: elem.getElementsByClassName("p-title")[0].getElementsByTagName("input")[0].value,
+                    description: elem.getElementsByClassName("p-desc")[0].getElementsByTagName("input")[0].value,
+                    position: {
+                        x: elem.getElementsByClassName("p-pos-x")[0].value,
+                        y: elem.getElementsByClassName("p-pos-y")[0].value,
+                        z: elem.getElementsByClassName("p-pos-z")[0].value
+                    }
+                }
+
+                libArskan.updatePointerFromObject(id, pointer);
+            }
+
+            function deletePointer(elem, id) {
+                console.log(id);
+                libArskan.deletePointerFromObject(id).then(result => {
+                    console.log("getEmbedUrlOfObjectFromSilo : ", result);
+                    elem.remove();
                 });
             }
         </script>

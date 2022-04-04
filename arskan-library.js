@@ -180,8 +180,6 @@ class ArskanLibrary {
         var _headers = new Headers();
         _headers.append("Authorization", "Bearer " + this.m_apiToken);
 
-        console.log("addPointerToObject", ptrData);
-
         var requestOptions = {
             method: 'DELETE',
             headers: _headers,

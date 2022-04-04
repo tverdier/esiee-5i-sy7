@@ -13,7 +13,7 @@
 
         <iframe style="width:1200px;height:800px;" id="viewer" title="ARSKAN viewer" src="" allowfullscreen=""></iframe>
         
-        <div class="hidden obj-template">
+        <div class="hidden obj-template" onclick="displayObject(this.getAttribute('obj-id'))">
             <div class="obj-picture">
                 <img src="" alt=""/>
             </div>
@@ -27,7 +27,6 @@
             var container = document.getElementById("container");
             var iframe_element = document.getElementById("viewer");
             var objTemplate = document.getElementsByClassName("obj-template")[0];
-            var silo_id = "6218feb9ef00f02e13c7a711";
 
             libArskan.getAllObjectsFromSilo().then(result => {
                 console.log("getAllObjectsFromSilo : ", result);
@@ -37,6 +36,9 @@
 
                     newObj.classList.remove("hidden");
                     newObj.classList.remove("obj-template");
+
+                    newObj.setAttribute("obj-id", obj._id);
+
                     var newPic = newObj.getElementsByClassName("obj-picture")[0];
                     newPic = newPic.getElementsByTagName("img")[0];
                     newPic.setAttribute("src", obj.picture);
@@ -49,6 +51,14 @@
                     desc.innerText = obj.description;
                 }
             });
+
+            function displayObject(id) {
+                console.log(id);
+                libArskan.getEmbedUrlOfObjectFromSilo(id).then(result => {
+                    console.log("getEmbedUrlOfObjectFromSilo : ", result);
+                    iframe_element.src = "https://viewer.arskan.com" + result.url + "?lang=fr";
+                });
+            }
         </script>
 
     </div>

@@ -1,12 +1,32 @@
 Groupe 8
 --------
 
-    Objet   :   Mexico
-    Langage :   Javascript
-    Token   :   https://public-api.arskan.com/apidoc
+    Objet       :   Mexico
+    Lien objet  :   https://viewer.arskan.com/objects/share/6246a5c252e58c5c21ce97ad
+    Langage     :   Javascript
+    Doc         :   https://public-api.arskan.com/apidoc
+    Token       :   eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNlbGluZUBrcmFiYmkuZnIiLCJzaWxvIjoiNjIxNjVmOWFlZjAwZjAyZTEzYzc2ZDdjIiwiaWF0IjoxNjQ2OTA5MzExLCJpc3MiOiJodHRwczovL2FwaS5hcnNrYW4uY29tIn0.ENwjv5bwwtwxOWcGMxJ4CZ-GrhamEfDOMjPmm2Bpdac
 
     Se connecter via https://silodata.arskan.com/login
-    Login   :   elisa.somphonhadky@edu.esiee.fr
-    Mdp     :   Esiee#2022
+    Login       :   elisa.somphonhadky@edu.esiee.fr
+    Mdp         :   Esiee#2022
 
     Serveur Discord :   https://discord.gg/uh5UZ4Wp
+
+    Consignes :
+    -----------
+
+    Pour L’API
+    1. Développer une bibliothèque (ou simple class) dans le langage de votre choix permettant d’utiliser l’API Arskan
+    2. Créer un fichier exemple d’utilisation
+
+    Pour l'interface web :
+    Développer un site web utilisant l’API permettant de :
+    1. Lister tous les objets disponibles dans le silo et les afficher (infos, vignette...)
+    2. Modifier un objet
+    3. L’afficher dans un viewer sur le site
+    3. Consulter la liste des pointeurs d’un objet
+    4. Afficher le détail d’un pointeur
+    5. Ajouter un pointeur
+    6. Supprimer un pointeur
+    7. Modifier un pointeur

@@ -2,25 +2,17 @@ class ArskanLib {
 
     constructor() {
         this._this = this;
-        this.apiToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNlbGluZUBrcmFiYmkuZnIiLCJzaWxvIjoiNjIxNjVmOWFlZjAwZjAyZTEzYzc2ZDdjIiwiaWF0IjoxNjQ2OTA5MzExLCJpc3MiOiJodHRwczovL2FwaS5hcnNrYW4uY29tIn0.ENwjv5bwwtwxOWcGMxJ4CZ-GrhamEfDOMjPmm2Bpdac";
-        this.profileToken = "5fd0a6c48568fc630e5be379"
+        this.m_apiToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNlbGluZUBrcmFiYmkuZnIiLCJzaWxvIjoiNjIxNjVmOWFlZjAwZjAyZTEzYzc2ZDdjIiwiaWF0IjoxNjQ2OTA5MzExLCJpc3MiOiJodHRwczovL2FwaS5hcnNrYW4uY29tIn0.ENwjv5bwwtwxOWcGMxJ4CZ-GrhamEfDOMjPmm2Bpdac";
+        this.m_profileToken = "5fd0a6c48568fc630e5be379"
     }
 
-    /** buildHeaders
-     * 
-     * Construit l'en-tête nécessaire au bon fonctionnement de l'ensemble des fonctions de l'API
-     * @returns Objet correspondant à l'en-tête
+    /*********************************************************************************************/
+    /** Documentation de l'API Arskan
+     *  -----------------------------
+     *  https://public-api.arskan.com/apidoc 
      */
-    buildHeaders() {
-        var headers = new Headers();
-        headers.append("Accept", "application/json");
-        headers.append("Content-Type", "application/json");
-        headers.append("Authorization", "Bearer " + this.apiToken);
+    /*********************************************************************************************/
 
-        return headers;
-    }
-
-    /** Documentation de l'API Arskan **/
     /** Objects functions
      *  -----------------
      *   Add an object to your silo.
@@ -31,6 +23,7 @@ class ArskanLib {
      *   Get one object on your Silo.
      *   Update an object on your Silo.
      */
+    /*********************************************************************************************/
 
     /** Get all objects on your Silo.
 
@@ -40,7 +33,7 @@ class ArskanLib {
      * Champ 	        Type 	        Description
      * Authorization 	String 	        Bear access token.
      * 
-     * @returns Tableau de tous les Objets des correspondant à l'ensemble des objets du Silo
+     * @returns Tableau de tous les objets des correspondant à l'ensemble des objets du Silo
      * Attributs de l'objet renvoyé :
      *   Champ 	        Type 	    Description
      *   name 	        String      Object name.
@@ -53,7 +46,10 @@ class ArskanLib {
      */
     getAllObjectsFromSilo() {
         // Construit l'en-tête
-        var _headers = this.buildHeaders();
+        var _headers = new Headers();
+        _headers.append("Accept", "application/json");
+        _headers.append("Content-Type", "application/json");
+        _headers.append("Authorization", "Bearer " + this.m_apiToken);
 
         // Déclare les options de la requête
         var requestOptions = {
@@ -88,24 +84,24 @@ class ArskanLib {
      *   enabled 	    String 	    Status of shared object.
      *   url 	        String 	    Id for share object.
      */
-    getEmbedUrlOfObjectFromSilo(objectIDString) {
-        var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + this.apiToken);
-        myHeaders.append("Content-Type", "application/json");
+    getEmbedUrlOfObjectFromSilo(objID) {
+        var _headers = new Headers();
+        _headers.append("Content-Type", "application/json");
+        _headers.append("Authorization", "Bearer " + this.m_apiToken);
 
-        var raw = JSON.stringify({
-            "profile": this.profileToken,
+        var _body = JSON.stringify({
+            "profile": this.m_profileToken,
             "name": "lien"
         });
 
         var requestOptions = {
             method: 'POST',
-            headers: myHeaders,
-            body: raw,
+            headers: _headers,
+            body: _body,
             redirect: 'follow'
         };
 
-        return fetch("https://public-api.arskan.com/objects/" + objectIDString + "/embed", requestOptions)
+        return fetch("https://public-api.arskan.com/objects/" + objID + "/embed", requestOptions)
             .then(response => response.text())
             .then(result => { return JSON.parse(result); })
             .catch(error => { return JSON.parse(error); });
@@ -115,11 +111,14 @@ class ArskanLib {
 
      * Syntaxe de l'URL : https://public-api.arskan.com/objects/:id
      * 
-     * @param {*} objectIDString 
+     * @param {string} objID 
      * @returns 
      */
-    getOneObjectFromSilo(objectIDString) {
-        var _headers = this.buildHeaders();
+    getOneObjectFromSilo(objID) {
+        var _headers = new Headers();
+        _headers.append("Accept", "application/json");
+        _headers.append("Content-Type", "application/json");
+        _headers.append("Authorization", "Bearer " + this.m_apiToken);
 
         var requestOptions = {
             method: 'GET',
@@ -127,57 +126,61 @@ class ArskanLib {
             redirect: 'follow'
         };
 
-        return fetch("https://public-api.arskan.com/objects/" + objectIDString, requestOptions)
+        return fetch("https://public-api.arskan.com/objects/" + objID, requestOptions)
             .then(response => response.text())
-            .then(result => { console.log(result); return JSON.parse(result); })
+            .then(result => { return JSON.parse(result); })
             .catch(error => { return JSON.parse(error); });
 
     }
 
-    /** Pointers functions */
+    /*********************************************************************************************/
+    /** Pointers functions
+     *  ------------------
+     * Add an pointer to your object.
+     * Delete an pointer on your object.
+     * Get all pointers from object.
+     * Get one pointer on your Silo.
+     * Update an pointer on your object.
+     */
+    /*********************************************************************************************/
 
-    addPointerToObject(objectIDString, pointerDataJSON) {
-        var _headers = this.buildHeaders();
+    /**
+     * 
+     * @param {string} objID 
+     * @param {JSON} ptrData 
+     * @returns 
+     */
+    addPointerToObject(objID, ptrData) {
+        var _headers = new Headers();
+        _headers.append("Content-Type", "application/json");
+        _headers.append("Authorization", "Bearer " + this._this.m_apiToken);
 
-        /*var raw = JSON.stringify(
-        {
-            "title": "Pointeur test",
-            "description": "Un test de pointeur",
-            "camera": {
-                "position": [
-                -4.077664170818505,
-                -4.847131772241993,
-                5.502754761565836],
-                "target": [
-                4.34378771530249,
-                -5.631050889679713,
-                2.456711622775799]
-            },
-            "position": {
-                "x": 4.34378771530249,
-                "y": -5.631050889679713,
-                "z": 2.456711622775799
-            }
-        }
-        );*/
-
-        var raw = JSON.stringify(pointerDataJSON);
+        console.log("addPointerToObject", ptrData);
+        var _body = JSON.stringify(ptrData);
 
         var requestOptions = {
             method: 'POST',
             headers: _headers,
-            body: raw,
+            body: _body,
             redirect: 'follow'
         };
 
-        fetch("https://public-api.arskan.com/objects/" + objectIDString + "/pointers", requestOptions)
+        return fetch("https://public-api.arskan.com/objects/" + objID + "/pointers", requestOptions)
             .then(response => response.text())
             .then(result => { return JSON.parse(result); })
             .catch(error => { return JSON.parse(error); });
     }
 
-    deletePointerFromObject(pointerIDString) {
-        var _headers = this.buildHeaders();
+    /**
+     * 
+     * @param {string} ptrID 
+     * @returns 
+     */
+    deletePointerFromObject(ptrID) {
+        var _headers = new Headers();
+        _headers.append("Authorization", "Bearer " + this.m_apiToken);
+
+        console.log("addPointerToObject", ptrData);
 
         var requestOptions = {
             method: 'DELETE',
@@ -185,14 +188,22 @@ class ArskanLib {
             redirect: 'follow'
         };
 
-        fetch("https://public-api.arskan.com/pointers/" + pointerIDString, requestOptions)
+        return fetch("https://public-api.arskan.com/pointers/" + ptrID, requestOptions)
             .then(response => response.text())
-            .then(result => { return JSON.parse(result); })
+            .then(result => { return result; })
             .catch(error => { return JSON.parse(error); });
     }
 
-    getAllPointersFromObject(objectIDString) {
-        var _headers = this.buildHeaders();
+    /**
+     * 
+     * @param {*} objID 
+     * @returns 
+     */
+    getAllPointersFromObject(objID) {
+        var _headers = new Headers();
+        _headers.append("Accept", "application/json");
+        _headers.append("Authorization", "Bearer " + this.m_apiToken);
+        _headers.append("Content-Type", "application/json");
 
         var requestOptions = {
             method: 'GET',
@@ -200,16 +211,23 @@ class ArskanLib {
             redirect: 'follow'
         };
 
-        return fetch("https://public-api.arskan.com/objects/" + objectIDString + "/pointers", requestOptions)
+        return fetch("https://public-api.arskan.com/objects/" + objID + "/pointers", requestOptions)
             .then(response => response.text())
             .then(result => { return JSON.parse(result); })
             .catch(error => { return JSON.parse(error); });
 
-
     }
 
-    getOnePointerFromSilo(pointerIDString) {
-        var _headers = this.buildHeaders();
+    /**
+     * 
+     * @param {*} ptrID 
+     * @returns 
+     */
+    getOnePointerFromSilo(ptrID) {
+        var _headers = new Headers();
+        _headers.append("Accept", "application/json");
+        _headers.append("Content-Type", "application/json");
+        _headers.append("Authorization", "Bearer " + this.m_apiToken);
 
         var requestOptions = {
             method: 'GET',
@@ -217,55 +235,48 @@ class ArskanLib {
             redirect: 'follow'
         };
 
-        return fetch("https://public-api.arskan.com/pointers/" + pointerIDString, requestOptions)
+        return fetch("https://public-api.arskan.com/pointers/" + ptrID, requestOptions)
             .then(response => response.text())
             .then(result => { return JSON.parse(result); })
             .catch(error => { return JSON.parse(error); });
     }
 
-    updatePointerFromObject(pointerIDString, pointerDataJSON) {
-        var _headers = this.buildHeaders();
+    /**
+     * 
+     * @param {*} ptrID 
+     * @param {*} ptrData 
+     * @returns 
+     */
+    updatePointerFromObject(ptrID, ptrData) {
+        var _headers = new Headers();
+        _headers.append("Content-Type", "application/json");
+        _headers.append("Authorization", "Bearer " + this.m_apiToken);
 
-        /*var raw = JSON.stringify({
-        "title": "Pointeur test changed",
-        "description": "Un test de pointeur",
-        "camera": {
-            "position": [
-            -4.077664170818505,
-            -4.847131772241993,
-            5.502754761565836
-            ],
-            "target": [
-            4.34378771530249,
-            -5.631050889679713,
-            2.456711622775799
-            ]
-        },
-        "position": {
-            "x": 4.34378771530249,
-            "y": -5.631050889679713,
-            "z": 2.456711622775799
-        }
-        });*/
-
-        var raw = JSON.stringify(pointerDataJSON);
+        var _body = JSON.stringify(ptrData);
 
         var requestOptions = {
             method: 'PUT',
             headers: _headers,
-            body: raw,
+            body: _body,
             redirect: 'follow'
         };
 
-        fetch("https://public-api.arskan.com/pointers/" + pointerIDString, requestOptions)
+        return fetch("https://public-api.arskan.com/pointers/" + ptrID, requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
     }
 
-    /** Silos functions */
+    /** Silos functions
+     *  ------------------
+     * Get your current Silo (associated with the token).
+     * Update the current Silo (associated with the token) - TODO
+     */
     getCurrentSilo() {
-        var _headers = this.buildHeaders();
+        var _headers = new Headers();
+        _headers.append("Accept", "application/json");
+        _headers.append("Content-Type", "application/json");
+        _headers.append("Authorization", "Bearer " + this.m_apiToken);
 
         var requestOptions = {
             method: 'GET',
@@ -280,10 +291,20 @@ class ArskanLib {
 
     }
 
-    /** Profiles functions */
+    /** Profiles function
+     *  -----------------
+     * Get profiles viewer
+     */
 
+    /**
+     * getProfilesViewer
+     * @returns 
+     */
     getProfilesViewer() {
-        var _headers = this.buildHeaders();
+        var _headers = new Headers();
+        _headers.append("Accept", "application/json");
+        _headers.append("Content-Type", "application/json");
+        _headers.append("Authorization", "Bearer " + this.m_apiToken);
 
         var requestOptions = {
             method: 'GET',

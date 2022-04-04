@@ -65,7 +65,7 @@ class ArskanLib {
         // Récupère l'ensemble des objets du Silo et les renvoie sous forme d'objet 
         return fetch("https://public-api.arskan.com/objects/", requestOptions)
             .then(response => response.text())
-            .then(result => { return JSON.parse(result); })
+            .then(result => { console.log(result); return JSON.parse(result); })
             .catch(error => { return JSON.parse(error); });
     }
 

@@ -1,4 +1,4 @@
-class ArskanLib {
+class ArskanLibrary {
 
     constructor() {
         this._this = this;
@@ -196,7 +196,7 @@ class ArskanLib {
 
     /**
      * 
-     * @param {*} objID 
+     * @param {string} objID 
      * @returns 
      */
     getAllPointersFromObject(objID) {
@@ -243,8 +243,8 @@ class ArskanLib {
 
     /**
      * 
-     * @param {*} ptrID 
-     * @param {*} ptrData 
+     * @param {str} ptrID 
+     * @param {JSON} ptrData 
      * @returns 
      */
     updatePointerFromObject(ptrID, ptrData) {

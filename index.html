@@ -23,14 +23,20 @@
             <div class="obj-picture" onclick="displayObject(this.parentElement.getAttribute('obj-id'))">
                 <img src="" alt=""/>
             </div>
-            <h3 class="obj-title"></h3>
-            <p class="obj-desc"></p>
+            <h3>Nom : <input type="text" class="obj-title"/></h3>
+            <div>Description : <input type="textarea" class="obj-desc"/></div>
+            <br/>
+            <button onclick="editObject(this.parentElement, this.parentElement.getAttribute('obj-id'))">Modifier l'objet</button>
+            <br/>
+            <br/>
             <button onclick="displayPointers(this.parentElement, this.parentElement.getAttribute('obj-id'))">Voir les pointeurs</button>
+            <br/>
+            <br/>
         </div>
         
         <div class="hidden pointer-template">
             <div class="p-title">Nom : <input type="text"/></div>
-            <div class="p-desc">Description : <input type="text"/></div>
+            <div class="p-desc">Description : <input type="textarea"/></div>
             <div class="p-pos">Position :
                 x : <input class="p-pos-x" type="number" step="0.01"/>
                 y : <input class="p-pos-y" type="number" step="0.01"/>
@@ -67,10 +73,10 @@
                     newPic.setAttribute("alt", obj.title);
 
                     var title = newObj.getElementsByClassName("obj-title")[0];
-                    title.innerText = obj.name;
+                    title.value = obj.name;
 
                     var desc = newObj.getElementsByClassName("obj-desc")[0];
-                    desc.innerText = obj.description;
+                    desc.value = obj.description;
                 }
             });
 
@@ -79,6 +85,17 @@
                 libArskan.getEmbedUrlOfObjectFromSilo(id).then(result => {
                     console.log("getEmbedUrlOfObjectFromSilo : ", result);
                     iframe_element.src = "https://viewer.arskan.com" + result.url + "?lang=fr";
+                });
+            }
+
+            function editObject(elem, id) {
+                var object = {
+                    name: elem.getElementsByClassName("obj-title")[0].value,
+                    description: elem.getElementsByClassName("obj-desc")[0].value
+                }
+
+                libArskan.updateObject(id, object).then(result => {
+                    alert("Objet mis à jour");
                 });
             }
 
@@ -120,7 +137,9 @@
                     }
                 }
 
-                libArskan.updatePointerFromObject(id, pointer);
+                libArskan.updatePointerFromObject(id, pointer).then(result => {
+                    alert("Pointeur mis à jour");
+                });
             }
 
             function deletePointer(elem, id) {
@@ -128,6 +147,7 @@
                 libArskan.deletePointerFromObject(id).then(result => {
                     console.log("getEmbedUrlOfObjectFromSilo : ", result);
                     elem.remove();
+                    alert("Pointeur supprimé");
                 });
             }
         </script>

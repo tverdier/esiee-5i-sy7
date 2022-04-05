@@ -21,17 +21,29 @@
         
         <div class="hidden obj-template">
             <div class="obj-picture" onclick="displayObject(this.parentElement.getAttribute('obj-id'))">
-                <img src="" alt=""/>
+                <img src="" alt="" />
             </div>
-            <h3>Nom : <input type="text" class="obj-title"/></h3>
-            <div>Description : <input type="textarea" class="obj-desc"/></div>
-            <br/>
+            <h3>Nom : <input type="text" class="obj-title" /></h3>
+            <div>Description : <input type="textarea" class="obj-desc" /></div>
+            <br />
             <button onclick="editObject(this.parentElement, this.parentElement.getAttribute('obj-id'))">Modifier l'objet</button>
-            <br/>
-            <br/>
+            <br />
+            <br />
+            <div>Nouveau pointeur : </div>
+            <div class="p-title">Nom : <input type="text" /></div>
+            <div class="p-desc">Description : <input type="textarea" /></div>
+            <div class="p-pos">
+                Position :
+                x : <input class="p-pos-x" type="number" step="0.01" />
+                y : <input class="p-pos-y" type="number" step="0.01" />
+                z : <input class="p-pos-z" type="number" step="0.01" />
+            </div>
+            <button onclick="addPointer(this.parentElement, this.parentElement.getAttribute('obj-id'))">Ajouter le pointeur</button>
+            <br />
+            <br />
             <button onclick="displayPointers(this.parentElement, this.parentElement.getAttribute('obj-id'))">Voir les pointeurs</button>
-            <br/>
-            <br/>
+            <br />
+            <br />
         </div>
         
         <div class="hidden pointer-template">
@@ -148,6 +160,34 @@
                     console.log("getEmbedUrlOfObjectFromSilo : ", result);
                     elem.remove();
                     alert("Pointeur supprimé");
+                });
+            }
+
+            function addPointer(elem, objId) {
+                var existing = document.getElementById("pointers");
+                if (existing) existing.remove();
+
+                var pointer = {
+                    title: elem.getElementsByClassName("p-title")[0].getElementsByTagName("input")[0].value,
+                    description: elem.getElementsByClassName("p-desc")[0].getElementsByTagName("input")[0].value,
+                    position: {
+                        x: elem.getElementsByClassName("p-pos-x")[0].value,
+                        y: elem.getElementsByClassName("p-pos-y")[0].value,
+                        z: elem.getElementsByClassName("p-pos-z")[0].value
+                    },
+                    camera: {
+                        position: [0, 0, 0],
+                        target: [0, 0, 0]
+                    }
+                }
+
+                libArskan.addPointerToObject(objId, pointer).then(result => {
+                    alert("Pointeur créé");
+                    elem.getElementsByClassName("p-title")[0].getElementsByTagName("input")[0].value = "";
+                    elem.getElementsByClassName("p-desc")[0].getElementsByTagName("input")[0].value = "";
+                    elem.getElementsByClassName("p-pos-x")[0].value = "";
+                    elem.getElementsByClassName("p-pos-y")[0].value = "";
+                    elem.getElementsByClassName("p-pos-z")[0].value = "";
                 });
             }
         </script>

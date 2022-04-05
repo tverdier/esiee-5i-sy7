@@ -133,6 +133,32 @@ class ArskanLibrary {
 
     }
 
+    /**
+     *
+     * @param {str} objID
+     * @param {JSON} objData
+     * @returns
+     */
+    updateObject(objID, objData) {
+        var _headers = new Headers();
+        _headers.append("Content-Type", "application/json");
+        _headers.append("Authorization", "Bearer " + this.m_apiToken);
+
+        var _body = JSON.stringify(objData);
+
+        var requestOptions = {
+            method: 'PUT',
+            headers: _headers,
+            body: _body,
+            redirect: 'follow'
+        };
+
+        return fetch("https://public-api.arskan.com/objects/" + objID, requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+    }
+
     /*********************************************************************************************/
     /** Pointers functions
      *  ------------------
